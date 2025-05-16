@@ -107,86 +107,86 @@ const CodeEditor = () => {
   };
 
   return (
-  <div style={{ display: 'flex', height: '95vh', padding: '20px', boxSizing: 'border-box' }}>
-    {/* Left: Code Editor */}
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', marginRight: '20px', position: 'relative', background: '#282a36', borderRadius: '6px' }}>
-      {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px', background: '#1e1f29', borderTopLeftRadius: '6px', borderTopRightRadius: '6px' }}>
-        <label style={{ color: '#f8f8f2' }}>
-          Select Language:{' '}
-          <select
-            value={language.value}
-            onChange={(e) => {
-              const selected = languages.find((lang) => lang.value === e.target.value);
-              setLanguage(selected);
-              setCode(selected.boilerplate);
-              setOutput('');
+    <div style={{ display: 'flex', height: '95vh', padding: '20px', boxSizing: 'border-box' }}>
+      {/* Left: Code Editor */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', marginRight: '20px', position: 'relative', background: '#282a36', borderRadius: '6px' }}>
+        {/* Header */}
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px', background: '#1e1f29', borderTopLeftRadius: '6px', borderTopRightRadius: '6px' }}>
+          <label style={{ color: '#f8f8f2' }}>
+            Select Language:{' '}
+            <select
+              value={language.value}
+              onChange={(e) => {
+                const selected = languages.find((lang) => lang.value === e.target.value);
+                setLanguage(selected);
+                setCode(selected.boilerplate);
+                setOutput('');
+              }}
+              style={{ background: '#44475a', color: '#f8f8f2', border: 'none', padding: '4px 8px', borderRadius: '4px' }}
+            >
+              {languages.map((lang) => (
+                <option key={lang.value} value={lang.value}>
+                  {lang.name}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <button
+            onClick={runCode}
+            style={{
+              background: '#50fa7b',
+              border: 'none',
+              padding: '6px 12px',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+              color: '#282a36'
             }}
-            style={{ background: '#44475a', color: '#f8f8f2', border: 'none', padding: '4px 8px', borderRadius: '4px' }}
           >
-            {languages.map((lang) => (
-              <option key={lang.value} value={lang.value}>
-                {lang.name}
-              </option>
-            ))}
-          </select>
-        </label>
+            Run Code
+          </button>
+        </div>
 
-        <button
-          onClick={runCode}
-          style={{
-            background: '#50fa7b',
-            border: 'none',
-            padding: '6px 12px',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            color: '#282a36'
-          }}
-        >
-          Run Code
-        </button>
+        {/* CodeMirror */}
+        <div style={{ flex: 1 }}>
+          <CodeMirror
+            value={code}
+            height="100%"
+            theme={dracula}
+            extensions={[language.extension(), ...baseExtensions]}
+            onChange={(value) => setCode(value)}
+          />
+        </div>
       </div>
 
-      {/* CodeMirror */}
-      <div style={{ flex: 1 }}>
-        <CodeMirror
-          value={code}
-          height="100%"
-          theme={dracula}
-          extensions={[language.extension(), ...baseExtensions]}
-          onChange={(value) => setCode(value)}
-        />
-      </div>
-    </div>
-
-    {/* Right: Output */}
-    <div style={{
-      width: '40%',
-      background: '#282a36',
-      color: '#f8f8f2',
-      padding: '20px',
-      borderRadius: '6px',
-      overflow: 'auto',
-      whiteSpace: 'pre-wrap'
-    }}>
-      <h2 style={{ color: '#bd93f9', marginTop: 0 }}>Output</h2>
-      {loading ? (
+      {/* Right: Output */}
+      <div style={{
+        width: '40%',
+        background: '#282a36',
+        color: '#f8f8f2',
+        padding: '20px',
+        borderRadius: '6px',
+        overflow: 'auto',
+        whiteSpace: 'pre-wrap'
+      }}>
+        <h2 style={{ color: '#bd93f9', marginTop: 0 }}>Output</h2>
+        {loading ? (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80%' }}>
             <FadeLoader
-            color={"#fefefe"}
-  height={30}
-  margin={10}
-  radius={30}
-  width={6}
-/>
+              color={"#fefefe"}
+              height={30}
+              margin={10}
+              radius={30}
+              width={6}
+            />
           </div>
         ) : (
           <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{output}</pre>
         )}
+      </div>
     </div>
-  </div>
-);
+  );
 
 };
 
