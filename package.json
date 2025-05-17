@@ -20,6 +20,7 @@
     "@codemirror/matchbrackets": "^0.19.4",
     "@codemirror/state": "^6.5.2",
     "@codemirror/view": "^6.36.8",
+    "@google/generative-ai": "^0.24.1",
     "@uiw/codemirror-theme-dracula": "^4.23.12",
     "@uiw/react-codemirror": "^4.23.12",
     "axios": "^1.9.0",

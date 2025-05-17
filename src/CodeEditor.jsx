@@ -5,7 +5,7 @@ import { python } from '@codemirror/lang-python';
 import { cpp } from '@codemirror/lang-cpp';
 import { java } from '@codemirror/lang-java';
 import { dracula } from '@uiw/codemirror-theme-dracula';
-
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { EditorView } from '@codemirror/view';
 import { autocompletion } from '@codemirror/autocomplete';
 import { syntaxHighlighting } from '@codemirror/language';
@@ -79,11 +79,47 @@ int main() {
   },
 ];
 
+
+
 const CodeEditor = () => {
+
+
   const [language, setLanguage] = useState(languages[0]);
   const [code, setCode] = useState(languages[0].boilerplate);
   const [output, setOutput] = useState('');
   const [loading, setLoading] = useState(false);
+
+  const [inputValue, setInputValue] = useState('');
+  const [promptResponses, setpromptResponses] = useState("");
+  const [ailoading, setAiLoading] = useState(false);
+  const [aiAsk, setAiAsk] = useState(false);
+
+
+  const genAI = new GoogleGenerativeAI(
+    "AIzaSyB12x7uPfrkCRcRnLNykIjUHQMbupElPS4"
+  );
+
+
+  const getResponseForGivenPrompt = async () => {
+
+    try {
+      setAiLoading(true)
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const result = await model.generateContent(inputValue);
+      setInputValue('')
+      const response = result.response;
+      const text = response.text();
+      console.log(text)
+      setpromptResponses(text);
+
+      setAiLoading(false)
+    }
+    catch (error) {
+      console.log(error)
+      console.log("Something Went Wrong");
+      setAiLoading(false)
+    }
+  }
 
   const runCode = async () => {
     setLoading(true);
@@ -137,6 +173,7 @@ const CodeEditor = () => {
             style={{
               background: '#50fa7b',
               border: 'none',
+              marginInlineStart:"calc(100% - 22px)",
               padding: '6px 12px',
               borderRadius: '4px',
               cursor: 'pointer',
@@ -146,10 +183,24 @@ const CodeEditor = () => {
           >
             Run Code
           </button>
+          <button
+            onClick={() => setAiAsk(true)}
+            style={{
+              background: 'red',
+              border: 'none',
+              padding: '6px 12px',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontWeight: 'bold',
+              color: '#282a36'
+            }}
+          >
+            Ask AI
+          </button>
         </div>
 
         {/* CodeMirror */}
-        <div style={{ flex: 1 }}>
+        <div style={{ flex: 1, fontSize:"20px" }}>
           <CodeMirror
             value={code}
             height="100%"
@@ -159,6 +210,81 @@ const CodeEditor = () => {
           />
         </div>
       </div>
+
+      {aiAsk && (
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          height: "100vh",
+          width: "100vw",
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 1000
+        }}>
+          <div style={{
+            padding: "50px",
+            backgroundColor: "#282a36",
+            color: "#f8f8f2",
+            borderRadius: "8px",
+            width: "90%",
+            maxWidth: "500px",
+            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.5)"
+          }}>
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="Ask Me Something You Want"
+              style={{
+                fontSize: "20px",
+                padding: "10px",
+                width: "calc(100% - 22px)",
+                marginBottom: "10px",
+                border: "1px solid #44475a",
+                borderRadius: "4px",
+                backgroundColor: "#44475a",
+                color: "#f8f8f2"
+              }}
+            />
+            <br />
+            <button
+              onClick={getResponseForGivenPrompt}
+              style={{
+                fontSize: "20px",
+                padding: "10px 20px",
+                backgroundColor: "#6272a4",
+                color: "#f8f8f2",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer"
+              }}
+            >
+              Ask
+            </button>
+
+            <div style={{ marginTop: "10px" }}>
+              {ailoading ? <FadeLoader
+                color={"#fefefe"}
+                height={20}
+                margin={10}
+                radius={25}
+                width={6}
+              /> : <pre style={{
+                maxHeight: "400px", fontSize: "20px",
+                overflowY: "auto", whiteSpace: "pre-wrap", color: "#f8f8f2"
+              }}>
+                Ans: {promptResponses}
+              </pre>
+              }
+            </div>
+          </div>
+        </div>
+      )}
+
+
 
       {/* Right: Output */}
       <div style={{
@@ -182,7 +308,7 @@ const CodeEditor = () => {
             />
           </div>
         ) : (
-          <pre style={{ margin: 0, whiteSpace: 'pre-wrap' }}>{output}</pre>
+          <pre style={{ margin: 0, whiteSpace: 'pre-wrap' ,fontSize:"20px"}}>{output}</pre>
         )}
       </div>
     </div>
