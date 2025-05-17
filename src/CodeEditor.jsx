@@ -168,35 +168,37 @@ const CodeEditor = () => {
             </select>
           </label>
 
-          <button
-            onClick={runCode}
-            style={{
-              background: '#50fa7b',
-              border: 'none',
-              marginInlineStart:"calc(100% - 22px)",
-              padding: '6px 12px',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              color: '#282a36'
-            }}
-          >
-            Run Code
-          </button>
-          <button
-            onClick={() => setAiAsk(true)}
-            style={{
-              background: 'red',
-              border: 'none',
-              padding: '6px 12px',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-              color: '#282a36'
-            }}
-          >
-            Ask AI
-          </button>
+          <div style={{ display: 'flex', gap: '10px' }}>
+  <button
+    onClick={runCode}
+    style={{
+      background: '#50fa7b',
+      border: 'none',
+      padding: '6px 12px',
+      borderRadius: '4px',
+      cursor: 'pointer',
+      fontWeight: 'bold',
+      color: '#282a36'
+    }}
+  >
+    Run Code
+  </button>
+  <button
+    onClick={() => setAiAsk(true)}
+    style={{
+      background: 'red',
+      border: 'none',
+      padding: '6px 12px',
+      borderRadius: '4px',
+      cursor: 'pointer',
+      fontWeight: 'bold',
+      color: '#282a36'
+    }}
+  >
+    Ask AI
+  </button>
+</div>
+
         </div>
 
         {/* CodeMirror */}
