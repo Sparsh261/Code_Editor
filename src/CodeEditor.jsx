@@ -169,40 +169,40 @@ const CodeEditor = () => {
           </label>
 
           <div style={{ display: 'flex', gap: '10px' }}>
-  <button
-    onClick={runCode}
-    style={{
-      background: '#50fa7b',
-      border: 'none',
-      padding: '6px 12px',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      fontWeight: 'bold',
-      color: '#282a36'
-    }}
-  >
-    Run Code
-  </button>
-  <button
-    onClick={() => setAiAsk(true)}
-    style={{
-      background: 'red',
-      border: 'none',
-      padding: '6px 12px',
-      borderRadius: '4px',
-      cursor: 'pointer',
-      fontWeight: 'bold',
-      color: '#282a36'
-    }}
-  >
-    Ask AI
-  </button>
-</div>
+            <button
+              onClick={runCode}
+              style={{
+                background: '#50fa7b',
+                border: 'none',
+                padding: '6px 12px',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                color: '#282a36'
+              }}
+            >
+              Run Code
+            </button>
+            <button
+              onClick={() => setAiAsk(true)}
+              style={{
+                background: 'red',
+                border: 'none',
+                padding: '6px 12px',
+                borderRadius: '4px',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                color: '#282a36'
+              }}
+            >
+              Ask AI
+            </button>
+          </div>
 
         </div>
 
         {/* CodeMirror */}
-        <div style={{ flex: 1, fontSize:"20px" }}>
+        <div style={{ flex: 1, fontSize: "20px" }}>
           <CodeMirror
             value={code}
             height="100%"
@@ -213,7 +213,7 @@ const CodeEditor = () => {
         </div>
       </div>
 
-      {aiAsk && (
+      {aiAsk ? (
         <div style={{
           position: "fixed",
           top: 0,
@@ -235,6 +235,14 @@ const CodeEditor = () => {
             maxWidth: "500px",
             boxShadow: "0 4px 20px rgba(0, 0, 0, 0.5)"
           }}>
+            <button
+              style={{
+                borderRadius: "5px", backgroundColor: "red",
+                color: "white", fontSize: "20px", position: "relative",
+                top: -40, left: 500, cursor: "pointer"
+              }}
+              onClick={() => setAiAsk(false)}
+            >X</button>
             <input
               type="text"
               value={inputValue}
@@ -278,13 +286,13 @@ const CodeEditor = () => {
                 maxHeight: "400px", fontSize: "20px",
                 overflowY: "auto", whiteSpace: "pre-wrap", color: "#f8f8f2"
               }}>
-                Ans: {promptResponses}
+                {promptResponses}
               </pre>
               }
             </div>
           </div>
         </div>
-      )}
+      ) : (<div />)}
 
 
 
@@ -310,7 +318,7 @@ const CodeEditor = () => {
             />
           </div>
         ) : (
-          <pre style={{ margin: 0, whiteSpace: 'pre-wrap' ,fontSize:"20px"}}>{output}</pre>
+          <pre style={{ margin: 0, whiteSpace: 'pre-wrap', fontSize: "20px" }}>{output}</pre>
         )}
       </div>
     </div>
