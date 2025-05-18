@@ -89,6 +89,7 @@ const CodeEditor = () => {
   const [output, setOutput] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const [userInput, setUserInput] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [promptResponses, setpromptResponses] = useState("");
   const [ailoading, setAiLoading] = useState(false);
@@ -133,6 +134,7 @@ const CodeEditor = () => {
             content: code,
           },
         ],
+         stdin: userInput,
       });
       const result = response.data.run.output;
       setOutput(result);
@@ -294,8 +296,6 @@ const CodeEditor = () => {
         </div>
       ) : (<div />)}
 
-
-
       {/* Right: Output */}
       <div style={{
         width: '40%',
@@ -306,6 +306,25 @@ const CodeEditor = () => {
         overflow: 'auto',
         whiteSpace: 'pre-wrap'
       }}>
+        <div style={{ marginBottom: '10px' , marginRight:"30px"}}>
+  <label style={{ color: '#f8f8f2' }}>Standard Input (stdin):</label>
+  <textarea
+    value={userInput}
+    onChange={(e) => setUserInput(e.target.value)}
+    rows={4}
+    style={{
+      width: '100%',
+      backgroundColor: '#44475a',
+      color: 'white',
+      border: '1px solid #6272a4',
+      borderRadius: '4px',
+      padding: '10px',
+      fontSize: '20px',
+      
+    }}
+    placeholder="If input has multiple values write them line by line."
+  />
+</div>
         <h2 style={{ color: '#bd93f9', marginTop: 0 }}>Output</h2>
         {loading ? (
           <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80%' }}>
